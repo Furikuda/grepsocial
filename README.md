@@ -1,8 +1,8 @@
 # GrepSocial
 
-Tool to periodically query social websites (YouTube, Instagram, Twitter, etc), and get items posted by people.
+Tool to periodically query social websites (YouTube, Instagram, Twitter, Flickr, etc), and get items posted by people.
 
-It's great for yall camwhores who've just back from some public event and want to find all the pics of your self.
+It's great for yall camwhores who've just back from some public event and want to find all the pics of yourself.
 You know who you are.
 
 It has 2 scripts:
@@ -15,41 +15,32 @@ It currently checks:
 * Flickr
 * Instagram
 
-## INSTALL
+## Install
 
-    cd public/
-    wget https://github.com/twbs/bootstrap/releases/download/v3.3.6/bootstrap-3.3.6-dist.zip
-    unzip bootstrap-3.3.6-dist.zip
-    mv bootstrap-3.3.6-dist/css/bootstrap.min.css css/
-    mv bootstrap-3.3.6-dist/js/bootstrap.min.js js/
-    rm -rf bootstrap*
-    cd js
-    wget https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js
-    cd ../../lib
-    git clone https://github.com/jjyg/libhttpclient.git
-    apt-get install ruby-twitter
+    apt install ruby-nokogiri
+    git clone https://github.com/furikuda/grepsocial
 
 ## Config
 
-Every interesting configuration stanza will be in `config.rb`.
+To enable sites to grep for, copy or link them from sites-available to sites-enabled.
+
+Just read the output of `ruby grepsocial.rb -h`
 
 ### YouTube
 
-The youtube.rb plugin requires an API key.
-
-Either save youtube API key in a file called `.ytapikey`, or disable the Youtube plugin, in config.rb :
-
-    :sites_disabled => ["youtube.rb"]
+The youtube.rb plugin requires an API key. Save it in a file called `.ytapikey`.
 
 ### Twitter
 
-The twitter.rb plugin requires an API key.
-
-Either save youtube API key in a file called `.twitterapikey`, or disable the Twitter plugin, in config.rb :
-
-    :sites_disabled => ["twitter.rb"]
+The twitter.rb plugin requires an API key. Save it in a file called `.twitterapikey`.
 
 ## Run
+
+Edit index.rb to change login & password to your linkings. Or remove that part entirely:
+
+    use Rack::Auth::Basic, "Restricted Area" do |username, password|
+          username == 'admin' and password == 'pwd'
+    end
 
 Add this to your crontab:
 
@@ -68,16 +59,6 @@ To get a list of all the new posts, go to /new. Default creds are `admin`/`admin
     echo -n "login:passw0rd" > .htpasswd
 
 
-If you tick a box, it tells the backend to "keep" this post.
-
-The root page `/` will show you all the kept posts.
-
-
-
 ## CONTRIBUTING
-
-### Add a new site
-
-Just copy `sites/_template.rb` and tweak it to your needs.
 
 
