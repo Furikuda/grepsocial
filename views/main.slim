@@ -1,0 +1,21 @@
+doctype html
+html
+    head
+        title
+            |GrepSocial
+        link    rel="stylesheet"    href="/css/gs.css" type="text/css"
+        link    rel="stylesheet"    href="/css/tooltip.css" type="text/css"
+    body
+        div id="container"
+
+        div id="submit"
+          form action="/markseen"
+            input type="submit" formmethod="post" value="Submit using POST"
+
+
+
+        script src="/js/jquery.min.js"
+        script src="/js/gs.js"
+        javascript:
+            $('document').ready(getUnseen());
+

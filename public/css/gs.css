@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: calc(4*300px + 10em);
+}
+
+#container > div {
+    margin: 1em;
+    position: relative;
+}
+div#submit {
+    width: 300px;
+    margin: 2em auto;
+}
+
+input[type=checkbox] {
+    -ms-transform: scale(3);
+    -moz-transform: scale(3);
+    -webkit-transform: scale(3);
+    -o-transform: scale(3);
+    transform: scale(3);
+}
+
+.thumb {
+    width:300px;
+    height:200px;
+}
+.thumb a {
+    display: block;
+    height: 100%;
+    background-size: cover;                                                                                                                                   
+    background-repeat: no-repeat;                                                                                                                             
+    background-position: center center;
+}
+img.overlay {
+    position: absolute;
+    margin: auto;
+    z-index:2;
+}
+label.checkbox-label {
+    padding-left:10px;
+    padding-top:5px;
+}
+
+.Flickr-item img.overlay {
+    right: 6%;
+    bottom: 17%;
+    height:20%;
+}
+
+.Instagram-item img.overlay {
+    right: 7%;
+    bottom: 20%;
+    height:20%;
+}
+
+.Twitter-item img.overlay {
+    right: 7%;
+    bottom: 20%;
+    height:20%;
+}
+
+.Youtube-item img.overlay {
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height:20%;
+}
