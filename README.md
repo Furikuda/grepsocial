@@ -54,11 +54,3 @@ Then point your browser to http://localhost:4567/
 
 Or run it on some httpd. For Apache2, you'll need the package `libapache2-mod-passenger`.
 
-To get a list of all the new posts, go to /new. Default creds are `admin`/`admin`, but you can change them:
-
-    echo -n "login:passw0rd" > .htpasswd
-
-
-## CONTRIBUTING
-
-
