@@ -1,0 +1,15 @@
+.htaccess
+.htpasswd
+*.swp
+public/css/bootstrap.min.css
+public/js/bootstrap.min.js
+public/js/jquery.min.js
+*.sqlite
+.ytapikey
+.twitterapikey
+*.log
+public/pics/twitter/C*.jpg
+TAGS
+public/pics/*/*.jpg
+public/pics/*/*.png
+.ignored_*
