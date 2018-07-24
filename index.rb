@@ -18,7 +18,7 @@ set :public_folder, File.join(File.dirname(__FILE__), "public")
 set :show_exceptions, false
 
 use Rack::Auth::Basic, "Restricted Area" do |username, password|
-      username == 'admin' and password == 'pwd'
+      username == 'toto' and password == 'tyty'
 end
 
 use Rack::Session::Cookie,
