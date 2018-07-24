@@ -11,7 +11,6 @@ require "slim"
 
 require_relative "./site.rb"
 
-$DATABASE = Sequel.sqlite("grepsocial.sqlite")
 
 set :bind, '0.0.0.0'
 
@@ -29,14 +28,15 @@ use Rack::Session::Cookie,
     :secret => SecureRandom.hex
 
 def mark_seen(item)
-    $DATABASE[:grepsocial].where(site:item[:site], identifier:item[:identifier]).update(seen: true)
+    settings.database[:grepsocial].where(site:item[:site], identifier:item[:identifier]).update(seen: true)
 end
 
 def get_unseen_items(nb:10)
-    rows = $DATABASE[:grepsocial].where(seen:false).limit(nb).map{|row| row.to_h}.each{|row| row['debug'] = row.pretty_inspect }
+    rows = settings.database[:grepsocial].where(seen:false).limit(nb).map{|row| row.to_h}.each{|row| row['debug'] = row.pretty_inspect }
     return rows
 end
 
+set :database, Sequel.sqlite("grepsocial.sqlite")
 set :items_cache, {}
 
 before do
