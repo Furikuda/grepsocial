@@ -81,6 +81,7 @@ class Youtube < SocialSite
         si.thumb = json_item.dig("snippet", "thumbnails", "medium", "url")
         si.date = DateTime.strptime(json_item.dig("snippet", "publishedAt")[/^(.+)\./,1], "%FT%T").to_time.to_i
         si.url = "https://www.youtube.com/watch?v=#{si.identifier}"
+        si.source = si.url
         si.site = self.class.to_s
         return si
     end
