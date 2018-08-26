@@ -7,11 +7,15 @@ class TestInstagram < TestSite
 
     require_relative "../sites-enabled/instagram.rb"
 
-    def _testItemSpecific(item)
+    def _testPostUrl(site, post_url)
         begin
-            assert_block { item.url=~/https:\/\/.+.cdninstagram.com\//}
-            assert_block { item.source.start_with?("https://www.instagram.com/")}
-            assert_equal("", item.title)
+            items = site.parse_nodes(site.get_json(Net::HTTP.get(URI(post_url))))
+            items.each do |item|
+                _testItem(item)
+                assert_block { item.url=~/https:\/\/.+.cdninstagram.com\//}
+                assert_block { item.source.start_with?("https://www.instagram.com/")}
+                assert_equal("", item.title)
+            end
         rescue Exception => e
             pp item
             raise e
@@ -20,11 +24,11 @@ class TestInstagram < TestSite
 
     def testSinglePicPost()
         i = Instagram.new()
-        html = Net::HTTP.get(URI.parse("https://www.instagram.com/p/Bld1RMzH5Wb/"))
+        html = Net::HTTP.get(URI.parse("https://www.instagram.com/p/Bm4rUuOAPMQ/"))
         items = i.parse_nodes(i.get_json(html))
         assert_equal(1, items.size)
-        assert_equal("1827851302221092251", items[0].identifier)
-        assert_block { items[0].url =~ /https:\/\/.+.cdninstagram.com\/vp\/383aabc5122040a81d7b16adef62fc02\/5BD37AF2\/t51.2885-15\/e35\/37270098_212508599601809_669909671477248000_n.jpg/}
+        assert_match(/^\d+$/, items[0].identifier)
+        assert_block { items[0].url =~ /https:\/\/.+.cdninstagram.com\/.*jpg/}
     end
 
     def _testSlideShow()
@@ -40,7 +44,14 @@ class TestInstagram < TestSite
     end
 
     def testFull()
-        _testFull(Instagram)
+        site = Instagram.new()
+        site.set_database(db: Sequel.sqlite())
+        results = site.fetch_new_tag_insta("test", max_results:5)
+        assert_block {results.size > 0}
+        results.each do |result|
+            assert_match(/^https:\/\/www.instagram.com\/p\/.*$/, result)
+            _testPostUrl(site, result)
+        end
     end
 
     def testIgnoreKnownPosts()
