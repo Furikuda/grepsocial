@@ -37,6 +37,9 @@ class Twitter < SocialSite
                 si.url = ent["url"] || ent["source_url"]
                 si.source = si.url
 
+                if si.url=~/https:\/\/curiouscat.me/
+                    next
+                end
                 items << si
             end
         rescue Exception
