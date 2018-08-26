@@ -53,17 +53,16 @@ class SocialSite
     end
 
     def error(msg)
-        @loggers.error do |logger|
-            logger.info(msg)
+        @loggers.each do |logger|
+            logger.error(msg)
         end
     end
 
     def warn(msg)
-        @loggers.warn do |logger|
-            logger.info(msg)
+        @loggers.each do |logger|
+            logger.warn(msg)
         end
     end
-
 
     def info(msg)
         @loggers.each do |logger|
@@ -114,7 +113,7 @@ class SocialSite
             begin
                 new_items.concat(fetch_new_tag(tag, max_results: max_results))
             rescue StandardError => e
-                msg "Failed to fetch_new_tag(#{tag}, max_results: #{max_results}) with error #{e}, continuing with next tag"
+                error "Failed to fetch_new_tag(#{tag}, max_results: #{max_results}) with error #{e}, continuing with next tag"
                 raise SocialSite::Error.new(msg), cause: e
             end
         end
