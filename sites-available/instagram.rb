@@ -7,7 +7,7 @@ class Instagram < SocialSite
 
     class InstagramError < SocialSite::Error ; end
 
-    def fetch_new_tag(tag, max_results:50)
+    def fetch_new_tag_insta(tag, max_results:50)
         items = []
         uri = URI("https://www.instagram.com/explore/tags/#{URI.encode_www_form_component(tag.gsub(' ',''))}/")
         Net::HTTP.start(
@@ -18,6 +18,9 @@ class Instagram < SocialSite
             request = Net::HTTP::Get.new uri
             response = http.request request
             json_dict = get_json(response.body)
+            unless json_dict
+                raise InstagramError.new("No Json when querying #{uri}")
+            end
             items = get_post_urls(json_dict, max_results:max_results)
         end
         return items
@@ -30,7 +33,7 @@ class Instagram < SocialSite
         @tags.each do |tag|
             debug "Searching for #{tag}"
             begin
-                new_posts.concat(fetch_new_tag(tag, max_results: max_results))
+                new_posts.concat(fetch_new_tag_insta(tag, max_results: max_results))
             rescue Exception => e
                 $stderr.puts e
             end
