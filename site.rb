@@ -113,7 +113,7 @@ class SocialSite
             begin
                 new_items.concat(fetch_new_tag(tag, max_results: max_results))
             rescue StandardError => e
-                error "Failed to fetch_new_tag(#{tag}, max_results: #{max_results}) with error #{e}, continuing with next tag"
+                msg = "Failed to fetch_new_tag(#{tag}, max_results: #{max_results}) with error #{e}, continuing with next tag"
                 raise SocialSite::Error.new(msg), cause: e
             end
         end
