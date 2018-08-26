@@ -29,6 +29,7 @@ class TestYoutube < TestSite
         expected_si = SocialSite::Item.new(
             "9bZkp7q19f0", "PSY - GANGNAM STYLE", "https://i.ytimg.com/vi/9bZkp7q19f0/mqdefault.jpg", 1342338392, "https://www.youtube.com/watch?v=9bZkp7q19f0")
         expected_si.site = "Youtube"
+        expected_si.source = "https://www.youtube.com/watch?v=9bZkp7q19f0"
         assert_equal(expected_si, item)
     end
 
