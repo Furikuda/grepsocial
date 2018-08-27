@@ -18,6 +18,7 @@ class Twitter < SocialSite
         new_items = []
         max_per_tag = max_results/( @tags.size + 1 )
         @tags.each do |tag|
+            debug "Searching for #{tag}"
             new_items.concat(fetch_new_tag(tag, max_results: max_per_tag))
         end
         return new_items
