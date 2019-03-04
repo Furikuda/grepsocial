@@ -32,7 +32,7 @@ def mark_seen(item)
 end
 
 def get_unseen_items(nb:10)
-    rows = settings.database[:grepsocial].where(seen:false).limit(nb).map{|row| row.to_h}.each{|row| row['debug'] = row.pretty_inspect }
+    rows = settings.database[:grepsocial].where(seen:false).order(Sequel.asc(:date)).limit(nb).map{|row| row.to_h}.each{|row| row['debug'] = row.pretty_inspect }
     return rows
 end
 
