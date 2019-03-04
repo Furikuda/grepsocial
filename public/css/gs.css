@@ -53,6 +53,12 @@ label.checkbox-label {
     height:20%;
 }
 
+.Furaffinity-item img.overlay {
+    right: 7%;
+    bottom: 7%;
+    height:20%;
+}
+
 .Instagram-item img.overlay {
     right: 7%;
     bottom: 20%;
