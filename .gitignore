@@ -8,3 +8,5 @@
 sites-enabled/*.rb
 TAGS
 .ignored_*
+.igaccesstoken
+.fa_cookies
