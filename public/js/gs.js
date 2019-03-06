@@ -73,7 +73,13 @@ function showPics(data,save=true) {
         if (item['thumb'] == "") {
             aaa.css({'background-image': 'url("'+ urlToSVGPic(item['url']) +'")'})
         } else  {
-            aaa.css({'background-image': 'url("'+item['thumb']+'")'})
+            if (item['site'] == 'Furaffinity') {
+              pic_url_elem = item['thumb'].split('/')
+              pic_filename = pic_url_elem[pic_url_elem.length - 1];
+              aaa.css({'background-image': 'url("/pics/furaffinity/'+pic_filename+'")'})
+            } else {
+              aaa.css({'background-image': 'url("'+item['thumb']+'")'})
+            }
         }
         aaa.appendTo(li);
         var overlay = $('<img/>')
