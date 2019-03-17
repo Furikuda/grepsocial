@@ -30,7 +30,7 @@ class TestFlickr < TestSite
     end
 
     def _testItemSpecific(item)
-        assert_block { item.url.start_with?("https://c1.staticflickr.com")}
+        assert_block { item.url =~ /https:\/\/.*.staticflickr.com\//}
         assert_block { item.source.start_with?("https://www.flickr.com/photos/")}
         assert_equal("", item.title)
     end
