@@ -43,9 +43,10 @@ class Flickr < SocialSite
 
     def get_thumb_pic(json)
         begin
-            return "https://" + (json.dig("sizes", "m") || json.dig("sizes", "s"))["displayUrl"]
+            pic_url = (json.dig("sizes", "m") || json.dig("sizes", "s") || json.dig("sizes", "sq"))["displayUrl"]
+            return pic_url=~/^https:/ ? pic_url : "https://"+pic_url
         rescue StandardError => e
-            msg = "Failed parsing json #{json}"
+            msg = "Failed parsing json #{json} (case: #{e})"
             raise FlickrError.new(msg), cause:e
         end
     end
