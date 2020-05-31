@@ -10,7 +10,7 @@ class Flickr < SocialSite
 
     def fetch_new_tag(tag, max_results:0)
         items = []
-        uri = URI("https://www.flickr.com/search/?sort=date-posted-desc&safe_search=0&advanced=1&text=#{URI.encode(tag)}")
+        uri = URI("https://www.flickr.com/search/?sort=date-posted-desc&safe_search=0&advanced=1&text=#{URI.encode_www_form_component(tag)}")
         Net::HTTP.start(
             uri.host, uri.port,
             open_timeout: 5, read_timeout: 5,
