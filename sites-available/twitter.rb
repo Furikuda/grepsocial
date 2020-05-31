@@ -98,7 +98,7 @@ class Twitter < SocialSite
         connect unless @http
         json = nil
         begin
-            resp = @http.get(URI.encode(req),@api_auth_header)
+            resp = @http.get(req,@api_auth_header)
             json = JSON.parse(resp.body)
         rescue Net::OpenTimeout => e
             debug "Got error #{e}, retrying"
