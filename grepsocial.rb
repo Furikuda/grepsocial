@@ -170,6 +170,7 @@ class GrepsocialUpdater
         count = 0
 
         (@options.sites || get_sites_list_objects(@options)).each do |site|
+            begin
             info "Updating #{site.class}"
             current_unseen = site.get_unseen_count
 
@@ -180,6 +181,15 @@ class GrepsocialUpdater
             new_items_count = site.get_unseen_count - current_unseen
             info "Found #{new_items_count}"
             count += new_items_count
+            rescue SocialSite::Error => e
+              puts e
+              e.backtrace.each { |line| puts line }
+              if e.cause
+                puts "Caused By"
+                puts e.cause
+                e.cause.backtrace.each { |line| puts line }
+              end
+            end
         end
         return count
     end
