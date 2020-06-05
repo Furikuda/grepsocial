@@ -14,6 +14,13 @@ class Youtube < SocialSite
     def fetch_new_tag(tag, max_results:0)
         items = []
         json = api_search(tag)
+        if json.dig("error", "errors")
+          warn "Error with the request to Youtube API"
+          json["error"]["errors"].each do |err|
+            warn err["message"]
+          end
+          return []
+        end
         json.dig("items").each do |json_item|
             items << json_to_item(json_item)
         end
@@ -37,7 +44,7 @@ class Youtube < SocialSite
         File.open(path, 'r') do |f|
             api_key = f.read().strip()
         end
-        unless api_key=~/^[a-zA-Z0-9\-]{39}$/
+        unless api_key=~/^[a-zA-Z0-9\-_]{39}$/
             raise YoutubeError.new("Need a proper Youtube API key in #{path} #{api_key}")
         end
         return api_key
@@ -59,6 +66,7 @@ class Youtube < SocialSite
         end
         query += "&type=video"
         query += "&q="+URI.encode_www_form_component(tag)
+        puts "Querrying Youtube API for tag #{tag} (max 50 videos)"
         uri = URI("https://www.googleapis.com/youtube/v3/search?"+query)
 
         json = nil
