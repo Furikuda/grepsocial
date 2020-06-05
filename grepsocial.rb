@@ -182,7 +182,13 @@ class GrepsocialUpdater
             info "Found #{new_items_count}"
             count += new_items_count
             rescue SocialSite::Error => e
-              pp e
+              puts e
+              e.backtrace.each { |line| puts line }
+              if e.cause
+                puts "Caused By"
+                puts e.cause
+                e.cause.backtrace.each { |line| puts line }
+              end
             end
         end
         return count
