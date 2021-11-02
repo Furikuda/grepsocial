@@ -197,7 +197,7 @@ class GrepsocialUpdater
 end
 
 if __FILE__ == $0
-    $DATABASE = Sequel.sqlite("grepsocial.sqlite")
+    $DATABASE = Sequel.sqlite("db/grepsocial.sqlite")
     runner = GrepsocialUpdater.new()
     runner.run(ARGV)
 end

@@ -15,7 +15,12 @@ require_relative "./site.rb"
 set :bind, '0.0.0.0'
 
 set :public_folder, File.join(File.dirname(__FILE__), "public")
-set :show_exceptions, false
+configure do
+  enable :sessions
+
+  set :database, Sequel.sqlite("db/grepsocial.sqlite")
+  set :items_cache, {}
+end
 
 use Rack::Auth::Basic, "Restricted Area" do |username, password|
       username == 'toto' and password == 'tyty'
@@ -36,15 +41,6 @@ def get_unseen_items(nb:10)
     return rows
 end
 
-set :database, Sequel.sqlite("grepsocial.sqlite")
-set :items_cache, {}
-
-before do
-    Dir.glob(File.join("sites-enabled", "*.rb")).each do |site|
-        load "#{site}"
-    end
-end
-
 get "/unseen" do
     nb = 10
     if params[:nb]=~/^(\d+)$/
@@ -56,19 +52,20 @@ get "/unseen" do
     results = get_unseen_items(nb:nb)
     randid = rand(10000000000)
     settings.items_cache[randid] = results
-    session["randid"] = randid
     content_type :json
-    return results.to_json
+    res = {'sessid'=> randid, 'data' => results}
+    return res.to_json
 end
 
 post "/markseen" do
-    if session
-        seen = settings.items_cache[session[:randid]] || []
+    sessid = params[:sessid].to_i
+    if sessid
+        seen = settings.items_cache[sessid] || []
         seen.each do |item|
             mark_seen(item)
         end
     end
-    redirect "https://#{request.host}/"
+    redirect "https://grepsocial.opm.duckdns.org/"
 
 end
 
