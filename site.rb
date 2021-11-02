@@ -5,7 +5,7 @@ class SocialSite
     class Error < RuntimeError
     end
 
-    Item = Struct.new(:identifier, :title, :thumb, :date, :url, :source, :site) do
+    Item = Struct.new(:identifier, :title, :thumb, :date, :url, :source, :site, :type) do
     end
 
     def self.sites_class_list()
@@ -36,6 +36,7 @@ class SocialSite
                 String  :url, unique: false, empty: false
                 # Points to the source / owner of the pic/video
                 String  :source, unique: false, empty: false
+                String :type, unique: false, empty: false
                 Boolean :seen, unique: false, empty: false, default: false
                 Boolean :keep, empty: false, default: false
             end
@@ -90,7 +91,8 @@ class SocialSite
             thumb: item.thumb,
             site: item.site,
             source: item.source || "",
-            url: item.url
+            url: item.url,
+            type: item.type
         )
     end
 
@@ -129,6 +131,7 @@ class SocialSite
         si.url = row[:url]
         si.site = row[:site]
         si.source = row[:source]
+        si.type = row[:type]
         return si
     end
 
