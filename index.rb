@@ -15,17 +15,16 @@ require_relative "./site.rb"
 set :bind, '0.0.0.0'
 
 set :public_folder, File.join(File.dirname(__FILE__), "public")
-set :show_exceptions, false
+configure do
+  enable :sessions
 
-use Rack::Auth::Basic, "Restricted Area" do |username, password|
-      username == 'admin' and password == 'pwd'
+  set :database, Sequel.sqlite("db/grepsocial.sqlite")
+  set :items_cache, {}
 end
 
-use Rack::Session::Cookie,
-    :key => 'rack.session',
-    :path => '/',
-    :expire_after => 2592000, # In seconds
-    :secret => SecureRandom.hex
+use Rack::Auth::Basic, "Restricted Area" do |username, password|
+      username == 'toto' and password == 'tyty'
+end
 
 def mark_seen(item)
     settings.database[:grepsocial].where(site:item[:site], identifier:item[:identifier]).update(seen: true)
@@ -34,15 +33,6 @@ end
 def get_unseen_items(nb:10)
     rows = settings.database[:grepsocial].where(seen:false).order(Sequel.asc(:date)).limit(nb).map{|row| row.to_h}.each{|row| row['debug'] = row.pretty_inspect }
     return rows
-end
-
-set :database, Sequel.sqlite("grepsocial.sqlite")
-set :items_cache, {}
-
-before do
-    Dir.glob(File.join("sites-enabled", "*.rb")).each do |site|
-        load "#{site}"
-    end
 end
 
 get "/unseen" do
@@ -56,19 +46,20 @@ get "/unseen" do
     results = get_unseen_items(nb:nb)
     randid = rand(10000000000)
     settings.items_cache[randid] = results
-    session["randid"] = randid
     content_type :json
-    return results.to_json
+    res = {'sessid'=> randid, 'data' => results}
+    return res.to_json
 end
 
 post "/markseen" do
-    if session
-        seen = settings.items_cache[session[:randid]] || []
+    sessid = params[:sessid].to_i
+    if sessid
+        seen = settings.items_cache[sessid] || []
         seen.each do |item|
             mark_seen(item)
         end
     end
-    redirect "https://#{request.host}/"
+    redirect "https://grepsocial.opm.duckdns.org/"
 
 end
 

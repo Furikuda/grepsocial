@@ -43,7 +43,11 @@ function urlToSVGPic(url) {
     return img_data;
 }
 
-function showPics(data,save=true) {
+function showPics(d,save=true) {
+    console.log(d);
+    var sessid = d['sessid'];
+    var data = d['data'];
+    console.log('sessid' + sessid);
     console.log("save "+save);
 	if (typeof data === 'undefined') {
 		return;
@@ -55,6 +59,10 @@ function showPics(data,save=true) {
             .text("That's all folks!") 
         return;
     }
+    var form = $('#mark')[0];
+    form.action = '/markseen?sessid='+sessid;
+    console.log(form);
+    console.log(form.action);
     var itemList = $('#container');
    	$.each(data, function(i) {
         var item = data[i];
