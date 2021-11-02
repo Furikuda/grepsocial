@@ -26,12 +26,6 @@ use Rack::Auth::Basic, "Restricted Area" do |username, password|
       username == 'toto' and password == 'tyty'
 end
 
-use Rack::Session::Cookie,
-    :key => 'rack.session',
-    :path => '/',
-    :expire_after => 2592000, # In seconds
-    :secret => SecureRandom.hex
-
 def mark_seen(item)
     settings.database[:grepsocial].where(site:item[:site], identifier:item[:identifier]).update(seen: true)
 end
