@@ -41,6 +41,6 @@ class TestSocialSite < Test::Unit::TestCase
         Dir.glob("sites-enabled/*.rb").each do |site|
             load "#{site}"
         end
-        assert_equal(["Flickr", "Furaffinity", "Instagram", "TestSocialSite::FakeSite", "Twitter", "Youtube"], SocialSite.sites_class_list().map{|x| x.to_s}.sort)
+        assert_equal(["Flickr", "Furaffinity", "TestSocialSite::FakeSite", "TwitterSite", "Youtube"], SocialSite.sites_class_list().map{|x| x.to_s}.sort)
     end
 end
