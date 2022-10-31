@@ -44,11 +44,8 @@ function urlToSVGPic(url) {
 }
 
 function showPics(d,save=true) {
-    console.log(d);
     var sessid = d['sessid'];
     var data = d['data'];
-    console.log('sessid' + sessid);
-    console.log("save "+save);
 	if (typeof data === 'undefined') {
 		return;
 	}
@@ -61,8 +58,6 @@ function showPics(d,save=true) {
     }
     var form = $('#mark')[0];
     form.action = '/markseen?sessid='+sessid;
-    console.log(form);
-    console.log(form.action);
     var itemList = $('#container');
    	$.each(data, function(i) {
         var item = data[i];
@@ -78,7 +73,7 @@ function showPics(d,save=true) {
 		var aaa = $('<a/>')
         .attr('href',item['source'])
         .attr('target','#blank');
-        if (item['thumb'] == "") {
+        if (item['thumb'] == "" || item['thumb'] == null) {
             aaa.css({'background-image': 'url("'+ urlToSVGPic(item['url']) +'")'})
         } else  {
             if (item['site'] == 'Furaffinity') {
