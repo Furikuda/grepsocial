@@ -17,7 +17,6 @@ class TestSite < Test::Unit::TestCase
     def _testItem(item)
         begin 
             assert_equal(SocialSite::Item, item.class)
-            assert_block { item.date > (Time.now.to_i() - 150000000)}
             assert_block { item.date < (Time.now.to_i() + 10)}
             assert_not_nil(item.identifier)
             assert_not_nil(item.url)
