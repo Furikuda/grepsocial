@@ -23,7 +23,16 @@ class TestFlickr < TestSite
     end
 
     def testBiggestPic()
-        pics = {"sizes"=>{"a"=>{"lol"=>"crap", "width"=>2}, "b"=>{"id"=>"coin", "width"=> 3}}}
+        pics = {
+          "data"=>{
+            "sizes"=>{
+              "data"=>{
+                "a"=>{"data"=>{"lol"=>"crap", "width"=>2}},
+                "b"=>{"data"=>{"id"=>"coin", "width"=> 3}}
+              }
+            }
+          }
+        }
         f = Flickr.new()
         res = f.get_biggest_pic(pics)
         assert_equal({"id"=>"coin", "width"=>3}, res)

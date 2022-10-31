@@ -43,7 +43,7 @@ class Flickr < SocialSite
 
     def get_thumb_pic(json)
         begin
-            pic_url = (json.dig("sizes", "m") || json.dig("sizes", "s") || json.dig("sizes", "sq"))["displayUrl"]
+            pic_url = (json.dig("data", "sizes", "data", "m", "data") || json.dig("data", "sizes", "data", "s", "data") || json.dig("data", "sizes", "data", "sq", "data"))["displayUrl"]
             return pic_url=~/^https:/ ? pic_url : "https://"+pic_url
         rescue StandardError => e
             msg = "Failed parsing json #{json} (case: #{e})"
@@ -52,14 +52,14 @@ class Flickr < SocialSite
     end
 
     def get_biggest_pic(json)
-        sizes = json["sizes"].values.sort_by{|x| x["width"]}.reverse
-        return sizes[0]
+        sizes = json["data"]["sizes"]["data"].values.sort_by{|x| x.dig("data", "width")}.reverse
+        return sizes[0]["data"]
     end
 
     def get_items_from_json(json)
         items = []
         date = Time.now()
-        json.dig("main", "search-photos-lite-models", 0, "photos", "_data").each do |u|
+        json.dig("main", "search-photos-lite-models", 0, "data", "photos", "data", "_data").each do |u|
             si = SocialSite::Item.new()
 
             user = u["pathAlias"]
