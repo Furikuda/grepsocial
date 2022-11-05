@@ -53,6 +53,7 @@ class Flickr < SocialSite
 
     def get_biggest_pic(json)
         sizes = json["sizes"]["data"].values.sort_by{|x| x.dig("data", "width")}.reverse
+
         return sizes[0]["data"]
     end
 
@@ -85,7 +86,7 @@ end
 
 if __FILE__ == $0
   f = Flickr.new()
-  f.fetch_new_tag("wazr2022").each do |t|
+  f.fetch_new_tag("lol2022").each do |t|
     pp t
   end
 end
