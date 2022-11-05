@@ -20,16 +20,7 @@ class TwitterSite < SocialSite
       @creds = JSON.parse(json_content)
   end
 
-  def get_api_file_path(path:nil)
-      res = path
-      unless res
-          res = File.join(File.dirname(File.basename(__FILE__)), ".twitterapikey")
-      end
-      unless File.exist?(res)
-          raise TwitterError.new("No Twitter api file ('#{File.absolute_path(res)}'), Twitter might not work properly")
-      end
-      return res
-  end
+
 
   def connect
     load_creds()
