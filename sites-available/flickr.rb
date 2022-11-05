@@ -59,7 +59,7 @@ class Flickr < SocialSite
     def get_items_from_json(json)
         items = []
         date = Time.now()
-        json.dig("main", "search-photos-lite-models", 0, "data", "photos", "data", "_data").each do |e|
+        json.dig("main", "search-photos-lite-models", 0, "data", "photos","data", "_data").each do |e|
             u = e["data"]
             si = SocialSite::Item.new()
 
