@@ -47,6 +47,8 @@ class SocialSite
 
     def initialize()
         set_database(db:$DATABASE)
+        @name = self.class.to_s
+        @tags = []
     end
 
     def set_loggers(loggers)
@@ -101,7 +103,19 @@ class SocialSite
     end
 
     def set_tags(tags)
-        @tags = tags
+        tags.each do |tag|
+          case tag
+          when /^~([^:]+):(.*)$/
+            site=$1
+            search=$2
+            if site.downcase == @name.downcase 
+              @tags = [search]
+              break
+            end
+          else
+            @tags << tag
+          end
+        end
     end
 
     def fetch_new_tag(tag, max_results: -1)

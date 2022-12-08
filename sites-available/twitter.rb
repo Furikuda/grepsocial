@@ -9,6 +9,7 @@ class TwitterSite < SocialSite
   attr_accessor :twitter
   def initialize()
     super()
+    @name = "twitter"
     @twitter = nil
   end
 
@@ -48,12 +49,15 @@ class TwitterSite < SocialSite
       max_per_tag = max_results/( @tags.size + 1 )
       @tags.each do |tag|
           debug "Searching for #{tag}"
+          begin
           new_items.concat(fetch_new_tag(tag, max_results: max_per_tag))
+          rescue Twitter::Error::TooManyRequests
+          end
       end
       return new_items
   end
 
-  def fetch_new_tag(tag, max_results:100)
+  def fetch_new_tag(tag, max_results:80)
     items = []
     connect if not @twitter
     results = @twitter.search(tag, result_type: "recent", count:max_results, tweet_mode:'extended')
@@ -106,9 +110,8 @@ end
 if __FILE__ == $0
   t = TwitterSite.new()
   t.connect
-  #res = t.fetch_new_tag('alsk2021')
-  #puts res.size
-  #res.each do |s|
-  #  pp s
-  #end
+  res = t.fetch_new_tag('test')
+  res.each do |s|
+    pp s
+  end
 end
