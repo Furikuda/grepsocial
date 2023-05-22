@@ -5,8 +5,32 @@ class SocialSite
     class Error < RuntimeError
     end
 
-    Item = Struct.new(:identifier, :title, :thumb, :date, :url, :source, :site, :type) do
+    class Item
+      attr_accessor :identifier, :title, :thumb, :date, :url, :source, :site, :type
+      def initialize
+        @identifier = nil
+        @title = nil
+        @thumb = nil
+        @date = nil
+        @url = nil
+        @source = nil
+        @site = nil
+        @type = nil
+      end
+
+      def ==()
+        return equal?(other)
+      end
+
+      def equal?(other)
+        return self.identifier == other.identifier
+      end
+
+      def eql?(other)
+        return equal?(other)
+      end
     end
+
 
     def self.sites_class_list()
         return @sites_class_list
@@ -109,8 +133,7 @@ class SocialSite
             site=$1
             search=$2
             if site.downcase == @name.downcase 
-              @tags = [search]
-              break
+              @tags << search
             end
           else
             @tags << tag

@@ -65,6 +65,12 @@ label.checkbox-label {
     height:20%;
 }
 
+.Nitter-item img.overlay {
+    right: 7%;
+    bottom: 20%;
+    height:20%;
+}
+
 .Twitter-item img.overlay {
     right: 7%;
     bottom: 20%;
