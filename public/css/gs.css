@@ -84,3 +84,19 @@ label.checkbox-label {
     bottom: 0;
     height:20%;
 }
+
+.video a:after {
+    content: "▶️";
+    font-size: 3em;
+    position: absolute;
+    margin-left: 100px;
+    margin-top: 75px;
+}
+
+.link a:after {
+    content: "🔗";
+    font-size: 3em;
+    position: absolute;
+    margin-left: 100px;
+    margin-top: 75px;
+}

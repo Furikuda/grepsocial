@@ -64,7 +64,8 @@ function showPics(d,save=true) {
 		var li = $('<div/>')
         .addClass('thumb')
         .addClass('item')
-        .addClass(item['site']+'-item');
+        .addClass(item['site']+'-item')
+        .addClass(item['type']);
         if (window.location.hash == '#debug') {
             li.attr('data-tooltip', item['debug'])
         }
