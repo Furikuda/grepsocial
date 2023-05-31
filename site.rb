@@ -1,6 +1,7 @@
 class SocialSite
 
     require "sequel"
+    @@sites_class_list = []
 
     class Error < RuntimeError
     end
@@ -33,11 +34,11 @@ class SocialSite
 
 
     def self.sites_class_list()
-        return @sites_class_list
+        return @@sites_class_list
     end
 
     def self.inherited(child)
-        (@sites_class_list ||= [] ) << child
+        (@@sites_class_list ||= [] ) << child
     end
 
     def set_database(db:nil)
