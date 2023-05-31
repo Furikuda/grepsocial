@@ -18,7 +18,7 @@ class SocialSite
         @type = nil
       end
 
-      def ==()
+      def ==(other)
         return equal?(other)
       end
 
@@ -66,13 +66,13 @@ class SocialSite
             end
         end
         @dbh = @db[:grepsocial]
-        @loggers = []
     end
 
     def initialize()
         set_database(db:$DATABASE)
         @name = self.class.to_s
         @tags = []
+        @loggers = []
     end
 
     def set_loggers(loggers)

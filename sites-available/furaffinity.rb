@@ -38,10 +38,11 @@ class Furaffinity < SocialSite
         si = SocialSite::Item.new()
         si.identifier = post['id']
         si.title = post.css('figcaption p a')[0]['title']
-        si.thumb = 'https:'+post.css('img')[0]['src'].gsub('furaffinity', 'fxfuraffinity')
+        si.thumb = 'https:'+post.css('img')[0]['src']
         si.date = DateTime.now().to_time.to_i
-        si.url = "https://www.furaffinity.net"+post.css('a')[0]['href']
+        si.url = "https://www.fxfuraffinity.net"+post.css('a')[0]['href']
         si.source = si.url
+
         si.site = self.class.to_s
         items << si
         save_pic(si.thumb, 'https://www.furaffinity.net/search/')

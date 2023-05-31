@@ -1,18 +1,17 @@
 require_relative "../site.rb"
 
-class NitterSite < SocialSite
+class Nitter < SocialSite
   require "net/http"
   require "nokogiri"
 
   class NitterError < Exception
   end
 
-  attr_accessor :nitter
-  def initialize(nitter_instance:"")
+  def initialize(nitter_instance:"https://nitter.pufe.org")
     super()
     @name = "nitter"
-    raise NitterError.new('cannot have an empty nitter instance') if nitter_instance == ""
     @nitter_instance = URI.parse(nitter_instance)
+    @nitter_instance.path = @nitter_instance.path.gsub("//","/") 
   end
 
   def instance_base_url()
@@ -99,7 +98,7 @@ class NitterSite < SocialSite
     end
     debug("Parsing #{search_url}") 
     begin
-    r = Nokogiri::HTML.parse(Net::HTTP.get(URI.parse(search_url)))
+      r = Nokogiri::HTML.parse(Net::HTTP.get(URI.parse(search_url)))
     rescue Exception => e
       puts search_url
       pp e
@@ -116,7 +115,11 @@ class NitterSite < SocialSite
       end
     end
 
-    new_index = r.css("div.show-more a")[-1]["href"].scan(/cursor=(.*)(^\/&#)?$/)[0][0]
+    new_index = nil
+    if r.css("div.show-more a")[-1]
+      new_index = r.css("div.show-more a")[-1]["href"].scan(/cursor=(.*)(^\/&#)?$/)[0][0]
+    end
+
     return new_index, items.uniq
   end
 
@@ -127,6 +130,7 @@ class NitterSite < SocialSite
     while items.size() < max_results 
       current_index, new_items = fetch_one_page(tag, current_index)
       items += new_items
+      break unless current_index
     end
 
     return items
@@ -134,7 +138,10 @@ class NitterSite < SocialSite
 end
 
 if __FILE__ == $0
-  t = NitterSite.new(nitter_instance:"http://localhost:8080")
+  require "logger"
+  t = Nitter.new()
+  l = Logger.new(STDOUT)
+  t.set_loggers([l])
   res = t.fetch_new_tag('test')
   res.each do |s|
     pp s

@@ -9,5 +9,5 @@ require_relative "tests/test_site.rb"
 
 require_relative "tests/test_flickr.rb"
 require_relative "tests/test_furaffinity.rb"
-require_relative "tests/test_twitter.rb"
+require_relative "tests/test_nitter.rb"
 require_relative "tests/test_youtube.rb"
